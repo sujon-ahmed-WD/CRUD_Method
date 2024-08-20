@@ -94,6 +94,43 @@
     1.create dynamic url with id 
     2.mention the DELETE methood
 
+    // UPDATE
+
+    --------ServerSide----------------
+        fetch(`http://localhost:8080/users/${loadedUser._id}`,{
+        method:'PUT',
+        headers:{
+            'content-type':'application/json'
+        },
+        body:JSON.stringify(Updateduser)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+
+        console.log(data)
+        if(data.modifiedCount>0){
+            alert("data is update") 
+        }
+    })
+    --------------------------------
+    ------------ClientSide----------
+    app.put('/data/:id',async(req,res)=>{
+        const id=req.params.id;// main data nevo
+        const user=req.body; // userbody modda ke asa
+        console.log('UpdteUser',id,user);
+        const filter={_id:new ObjectId(id)} //{kontermodma kaj korvo _id: MongoDB-তে প্রতিটি ডকুমেন্টের জন্য একটি ইউনিক আইডেন্টিফায়ার থাকে,  যেটি _id নামে পরিচিত।
+           new ObjectId(id): id একটি স্ট্রিং, যেটিকে ObjectId অবজেক্টে কনভার্ট করা হচ্ছে, যাতে MongoDB-তে _id এর মানের সাথে সঠিকভাবে মেলানো যায়।}
+        const options={upsert:true}; // data jodi thaka thaola overlapinge hova aer jodi aer jodi nh thka tah hola amne
+        const updateuser={ // ke ke ami updater korbo ti demu
+            $set:{
+                name:user.name; // akna user thaka ana name kaj korsa 
+                email:user.email // email user thaka akana email update etc kaj korsa 
+            }
+        }
+        const result=await userCollection.updateOne(filter,updateuser,user)
+        res.send(result)
+         
+    })    
 
 
 
