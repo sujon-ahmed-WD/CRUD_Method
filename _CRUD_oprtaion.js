@@ -49,6 +49,8 @@
                 alert('deleted Successfully');
                 const remaninge=users.filter(user=>user._id !== _id);
                 setUser(remaninge)
+
+            This line Deleted to us  : window.location.reload(); 
             }
         })
     }
@@ -129,6 +131,10 @@
         }
         const result=await userCollection.updateOne(filter,updateuser,user)
         res.send(result)
+
+
+
+        ---------------AuthoraionCRUD---------------------
          
     })    
 
