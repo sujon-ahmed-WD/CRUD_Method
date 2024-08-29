@@ -135,9 +135,70 @@
 
 
         ---------------AuthoraionCRUD---------------------
-         
-    })    
 
+        Step1>setup auticaion>email,passwoed,add,> authProvider set then Client side is add
+
+                              /Server SIDE/
+                              // 
+                                        CREAT / POST
+      app.post("/postdata", async (req, res) => {
+        const user = req.body ;
+        console.log("new ", user);
+        // const result=await userCollection.insertOne(user)
+        // res.send(result)
+      });
+
+
+      //           READ / GET
+
+      app.get("/data", async (req, res) => {
+        const cursor = await userCollection.find().toArray();
+        res.send(cursor);
+      });
+    
+    })    
+      //-----------------------------CLIENT-SIDE--------------------------------------------
+      
+            .then((result) => {
+        console.log("USER created", result.user);
+
+        fetch("http://localhost:4000/postdata", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).then((res) => console.log(res));
+      })
+      .then((error) => {
+        console.error(error);
+      });
+
+      // Update
+
+      -----------------Server----------------------------------
+              app.patch('/user', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email }
+            const updateDoc = {
+                $set: {
+                    lastLoggedAt: user.lastLoggedAt
+                }
+            }
+            const result = await userCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        })
+            
+
+    // [IMPORT--------LINE]     [IMPORT--------LINE] 
+    
+    1:THis line is da who is the date for user
+    const creAt=result.user?.metadata?.creationTime;
+    2.This Lien is Delete for your Line
+    window.location.reload();
+    // [IMPORT--------LINE]     [IMPORT--------LINE] 
+
+    
 
 
 
